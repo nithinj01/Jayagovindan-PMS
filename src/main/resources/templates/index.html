@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+    <title>Patient Management</title>
+</head>
+
+<body>
+<nav>
+    <ul>
+        <li><a th:href="@{/patients}" th:text="Home"></a></li>
+    </ul>
+</nav>
+<h1>Patient Management System</h1>
+
+<!-- Select a patient -->
+<h2>Select a Patient:</h2>
+<form th:action="@{/patients}" method="get">
+    <select name="patientId" required>
+        <option value="" disabled selected>Select a patient</option>
+        <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.name + ' ' + patient.surname}" th:selected="${patient.id == selectedPatientId}"></option>
+    </select>
+    <button type="submit">Select Patient</button>
+</form>
+
+<!-- Create a visit for the patient -->
+<h2>Create/Update Visits for Patient:</h2>
+<form th:action="@{/visits}" method="post">
+    <input type="hidden" name="patientId" th:value="${selectedPatientId}" />
+    <table>
+        <!-- Add success message here -->
+        <tr th:if="${success}">
+            <td colspan="2" style="color: green; font-weight: bold;">Visit created successfully!</td>
+        </tr>
+        <!-- Create a table row for each input field -->
+        <tr>
+            <td><label for="dateAndTime">Date and Time:</label></td>
+            <td><input type="datetime-local" name="dateAndTime" required /></td>
+        </tr>
+        <tr>
+            <td><label for="visitType">Visit Type:</label></td>
+            <td>
+                <select name="visitType" required>
+                    <option value="" disabled selected>Select a visit type</option>
+                    <option value="AT_HOME">At Home</option>
+                    <option value="AT_DOCTOR_OFFICE">At Doctor Office</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="reason">Reason:</label></td>
+            <td><input type="text" name="reason" required /></td>
+        </tr>
+        <tr>
+            <td><label for="familyHistory">Family History:</label></td>
+            <td><textarea name="familyHistory"></textarea></td>
+        </tr>
+    </table>
+
+    <button type="submit">Create Visit</button>
+</form>
+
+<!-- View a visit -->
+<h2>Display Visits:</h2>
+<form th:action="@{/visits/patient}" method="get">
+    <select name="patientId" required>
+        <option value="" disabled selected>Select a patient</option>
+        <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.name + ' ' + patient.surname}" th:selected="${patient.id == selectedPatientId}"></option>
+    </select>
+    <button type="submit">Show Visits</button>
+</form>
+<!-- Display visit details (if available) -->
+<h2>Visit Details:</h2>
+<table th:if="${visits != null}" border="1">
+    <thead>
+    <tr>
+        <th>Date and Time</th>
+        <th>Visit Type</th>
+        <th>Reason</th>
+        <th>Family History</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="visit : ${visits}">
+        <td th:text="${visit.dateAndTime}"></td>
+        <td th:text="${visit.visitType}"></td>
+        <td th:text="${visit.reason}"></td>
+        <td th:text="${visit.familyHistory}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+</body>
+
+</html>

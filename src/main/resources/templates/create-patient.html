@@ -2,9 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Patient Management System</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
+<nav>
+    <ul>
+        <li><a th:href="@{/patients}" th:text="Home"></a></li>
+        <li><a th:href="@{/patients/create}" th:text="CreatePatient"></a></li>
+    </ul>
+</nav>
 <div class="container mt-5">
     <h2>Patient Management System</h2>
 

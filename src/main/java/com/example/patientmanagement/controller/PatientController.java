@@ -42,6 +42,17 @@ public class PatientController {
         Patient patient = patientService.getPatientById(id);
         return ResponseEntity.ok(patient);
     }
+    @GetMapping("/create")
+    public String showCreatePatientForm(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "create-patient";
+    }
+
+    @PostMapping("/create")
+    public String createPatients(@ModelAttribute Patient patient) {
+        patientService.savePatient(patient);
+        return "redirect:/patients/create";
+    }
     //Create patient future use case
     @PostMapping("/patients")
     public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
